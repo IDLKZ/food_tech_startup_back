@@ -1,0 +1,63 @@
+# locales/ru/LC_MESSAGES/messages.po
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "invalid_credentials"
+msgstr "Неверный логин или пароль"
+
+msgid "user_not_found"
+msgstr "Пользователь не найден"
+
+msgid "user_already_exists"
+msgstr "Пользователь уже существует"
+
+msgid "user_blocked"
+msgstr "Пользователь заблокирован"
+
+msgid "user_not_verified"
+msgstr "Пользователь не верифицирован"
+
+msgid "invalid_email"
+msgstr "Некорректный email адрес"
+
+msgid "invalid_phone"
+msgstr "Некорректный номер телефона"
+
+msgid "invalid_username"
+msgstr "Некорректный логин"
+
+msgid "invalid_password"
+msgstr "Пароль должен содержать минимум 8 символов, цифру и заглавную букву"
+
+msgid "role_not_found"
+msgstr "Роль не найдена"
+
+msgid "role_already_exists"
+msgstr "Роль уже существует"
+
+msgid "permission_not_found"
+msgstr "Право доступа не найдено"
+
+msgid "permission_already_granted"
+msgstr "Право доступа уже назначено"
+
+msgid "not_found"
+msgstr "Запись не найдена"
+
+msgid "already_exists"
+msgstr "Запись уже существует"
+
+msgid "forbidden"
+msgstr "Доступ запрещён"
+
+msgid "validation_error"
+msgstr "Ошибка валидации"
+
+msgid "internal_error"
+msgstr "Внутренняя ошибка сервера"
+
+msgid "bad_request"
+msgstr "Некорректный запрос"

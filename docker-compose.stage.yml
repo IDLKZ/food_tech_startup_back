@@ -1,0 +1,104 @@
+# docker-compose.stage.yml
+services:
+
+  postgres-primary:
+    image: postgres:16-alpine
+    container_name: food_tech_postgres_primary_stage
+    environment:
+      POSTGRES_DB: food_tech_stage
+      POSTGRES_USER: food_tech
+      POSTGRES_PASSWORD: food_tech_pass_stage
+    volumes:
+      - postgres_primary_stage:/var/lib/postgresql/data
+    command: >
+      postgres
+        -c wal_level=logical
+        -c max_replication_slots=4
+        -c max_wal_senders=4
+    networks:
+      - food_tech_stage_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U food_tech -d food_tech_stage"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  postgres-replica:
+    image: postgres:16-alpine
+    container_name: food_tech_postgres_replica_stage
+    environment:
+      POSTGRES_DB: food_tech_stage
+      POSTGRES_USER: food_tech
+      POSTGRES_PASSWORD: food_tech_pass_stage
+    volumes:
+      - postgres_replica_stage:/var/lib/postgresql/data
+    networks:
+      - food_tech_stage_net
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    command: postgres
+
+  redis:
+    image: redis:7-alpine
+    container_name: food_tech_redis_stage
+    volumes:
+      - redis_stage:/data
+    networks:
+      - food_tech_stage_net
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: food_tech_rabbitmq_stage
+    environment:
+      RABBITMQ_DEFAULT_USER: food_tech
+      RABBITMQ_DEFAULT_PASS: food_tech_pass_stage
+    volumes:
+      - rabbitmq_stage:/var/lib/rabbitmq
+    networks:
+      - food_tech_stage_net
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: food_tech_api_stage
+    environment:
+      APP_ENV: stage
+    env_file:
+      - .env.stage
+    ports:
+      - "8000:8000"
+    networks:
+      - food_tech_stage_net
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    restart: unless-stopped
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: food_tech_celery_stage
+    command: celery -A app.celery_app worker --loglevel=info -c 2
+    environment:
+      APP_ENV: stage
+    env_file:
+      - .env.stage
+    networks:
+      - food_tech_stage_net
+    depends_on:
+      - rabbitmq
+      - redis
+    restart: unless-stopped
+
+volumes:
+  postgres_primary_stage:
+  postgres_replica_stage:
+  redis_stage:
+  rabbitmq_stage:
+
+networks:
+  food_tech_stage_net:
+    driver: bridge

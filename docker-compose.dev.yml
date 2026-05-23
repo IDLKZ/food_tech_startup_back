@@ -1,0 +1,94 @@
+services:
+
+  postgres-primary:
+    image: postgres:16-alpine
+    container_name: food_tech_postgres_primary
+    environment:
+      POSTGRES_DB: food_tech
+      POSTGRES_USER: food_tech
+      POSTGRES_PASSWORD: food_tech_pass
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_primary_data:/var/lib/postgresql/data
+    command: >
+      postgres
+        -c wal_level=logical
+        -c max_replication_slots=4
+        -c max_wal_senders=4
+    networks:
+      - food_tech_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U food_tech -d food_tech"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  postgres-replica:
+    image: postgres:16-alpine
+    container_name: food_tech_postgres_replica
+    environment:
+      POSTGRES_DB: food_tech
+      POSTGRES_USER: food_tech
+      POSTGRES_PASSWORD: food_tech_pass
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_replica_data:/var/lib/postgresql/data
+    networks:
+      - food_tech_net
+    depends_on:
+      postgres-primary:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U food_tech -d food_tech"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    command: postgres
+
+  redis:
+    image: redis:7-alpine
+    container_name: food_tech_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - food_tech_net
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: food_tech_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - food_tech_net
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: food_tech_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@food.tech
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8888:80"
+    networks:
+      - food_tech_net
+    depends_on:
+      - postgres-primary
+
+volumes:
+  postgres_primary_data:
+  postgres_replica_data:
+  redis_data:
+  rabbitmq_data:
+
+networks:
+  food_tech_net:
+    driver: bridge

@@ -1,0 +1,63 @@
+# locales/kk/LC_MESSAGES/messages.po
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: kk\n"
+
+msgid "invalid_credentials"
+msgstr "Қате логин немесе құпия сөз"
+
+msgid "user_not_found"
+msgstr "Пайдаланушы табылмады"
+
+msgid "user_already_exists"
+msgstr "Пайдаланушы бұрыннан бар"
+
+msgid "user_blocked"
+msgstr "Пайдаланушы бұғатталған"
+
+msgid "user_not_verified"
+msgstr "Пайдаланушы расталмаған"
+
+msgid "invalid_email"
+msgstr "Электрондық пошта дұрыс емес"
+
+msgid "invalid_phone"
+msgstr "Телефон нөмірі дұрыс емес"
+
+msgid "invalid_username"
+msgstr "Логин дұрыс емес"
+
+msgid "invalid_password"
+msgstr "Құпия сөз кемінде 8 таңбадан, санан және бас әріптен тұруы керек"
+
+msgid "role_not_found"
+msgstr "Рөл табылмады"
+
+msgid "role_already_exists"
+msgstr "Рөл бұрыннан бар"
+
+msgid "permission_not_found"
+msgstr "Рұқсат табылмады"
+
+msgid "permission_already_granted"
+msgstr "Рұқсат бұрыннан берілген"
+
+msgid "not_found"
+msgstr "Жазба табылмады"
+
+msgid "already_exists"
+msgstr "Жазба бұрыннан бар"
+
+msgid "forbidden"
+msgstr "Қол жеткізу тыйым салынған"
+
+msgid "validation_error"
+msgstr "Тексеру қатесі"
+
+msgid "internal_error"
+msgstr "Ішкі сервер қатесі"
+
+msgid "bad_request"
+msgstr "Жарамсыз сұраныс"

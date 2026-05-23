@@ -1,0 +1,56 @@
+# app/modules/iam/application/use_cases/role/create_role_use_case.py
+from dataclasses import dataclass
+from uuid import UUID
+
+from app.core.exceptions.common_exceptions import ApiBadRequestException
+from app.modules.iam.domain.entities.role_entity import RoleEntity
+from app.modules.iam.infrastructure.repo_impl.role_repository_impl import RoleRepository
+from app.shared.infrastructure.uow.abstract_uow import BaseUoW
+from app.shared.infrastructure.uow.sql_alchemy_uow import SqlAlchemyUoW
+
+
+@dataclass(frozen=True)
+class CreateRoleCommand:
+    title_ru: str
+    value: str
+    title_kk: str | None = None
+    title_en: str | None = None
+    description_ru: str | None = None
+    description_kk: str | None = None
+    description_en: str | None = None
+
+
+@dataclass(frozen=True)
+class CreateRoleResult:
+    role_id: UUID
+
+
+class CreateRoleUseCase:
+    def __init__(
+        self,
+        role_repo: RoleRepository,
+        uow: BaseUoW,
+    ) -> None:
+        self._repo = role_repo
+        self._uow = uow
+
+    async def execute(self, cmd: CreateRoleCommand) -> CreateRoleResult:
+        async with self._uow:
+            existing = await self._repo.get_by_value(cmd.value)
+            if existing:
+                raise ApiBadRequestException()
+
+            role = RoleEntity.create(
+                title_ru=cmd.title_ru,
+                title_kk=cmd.title_kk,
+                title_en=cmd.title_en,
+                description_ru=cmd.description_ru,
+                description_kk=cmd.description_kk,
+                description_en=cmd.description_en,
+                value=cmd.value,
+            )
+
+            await self._repo.create_role(role)
+            await self._uow.commit()
+
+        return CreateRoleResult(role_id=role.id)

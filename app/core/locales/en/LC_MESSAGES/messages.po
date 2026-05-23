@@ -1,0 +1,63 @@
+# locales/en/LC_MESSAGES/messages.po
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "invalid_credentials"
+msgstr "Invalid login or password"
+
+msgid "user_not_found"
+msgstr "User not found"
+
+msgid "user_already_exists"
+msgstr "User already exists"
+
+msgid "user_blocked"
+msgstr "User is blocked"
+
+msgid "user_not_verified"
+msgstr "User is not verified"
+
+msgid "invalid_email"
+msgstr "Invalid email address"
+
+msgid "invalid_phone"
+msgstr "Invalid phone number"
+
+msgid "invalid_username"
+msgstr "Invalid username"
+
+msgid "invalid_password"
+msgstr "Password must contain at least 8 characters, a digit and an uppercase letter"
+
+msgid "role_not_found"
+msgstr "Role not found"
+
+msgid "role_already_exists"
+msgstr "Role already exists"
+
+msgid "permission_not_found"
+msgstr "Permission not found"
+
+msgid "permission_already_granted"
+msgstr "Permission already granted"
+
+msgid "not_found"
+msgstr "Record not found"
+
+msgid "already_exists"
+msgstr "Record already exists"
+
+msgid "forbidden"
+msgstr "Access forbidden"
+
+msgid "validation_error"
+msgstr "Validation error"
+
+msgid "internal_error"
+msgstr "Internal server error"
+
+msgid "bad_request"
+msgstr "Bad request"
